@@ -5,6 +5,7 @@ import { PlacesComponent } from '../places.component';
 import { PlacesContainerComponent } from '../places-container/places-container.component';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Subscription, throwError } from 'rxjs';
+import { PlacesService } from '../places.service';
 
 @Component({
   selector: 'app-available-places',
@@ -17,13 +18,13 @@ export class AvailablePlacesComponent implements OnInit , OnDestroy {
 
   places = signal<Place[] | undefined>(undefined);
 subscription:Subscription | undefined;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private placesService:PlacesService) {}
  isFetching=signal(false);
 error=signal('')
 
   ngOnInit(): void {
     this.isFetching.set(true);
-    this.subscription=this.http.get<{places:Place[]}>('http://localhost:3000/places').subscribe(
+    this.subscription=this.placesService.loadAvailablePlaces().subscribe(
       {
         next:(resData)=>{this.places.set(resData.places)},
         complete:()=> {
