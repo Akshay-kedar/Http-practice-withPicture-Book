@@ -16,17 +16,18 @@ import { PlacesService } from '../places.service';
 })
 export class UserPlacesComponent implements OnInit{
 
-   places = signal<Place[] | undefined>(undefined);
+   
   subscription:Subscription | undefined;
   error=signal('')
   isFetching=signal(false);
   constructor(private http:HttpClient,private placesService:PlacesService){}
 
+  places=this.placesService.loadedUserPlaces;
+
   ngOnInit(): void {
 //user-places
 this.isFetching.set(true);
 this.subscription=this.placesService.loadUserPlaces().subscribe({
-  next:(res)=>this.places.set(res.places),
   complete:()=> {
     this.isFetching.set(false)
   },

@@ -37,12 +37,8 @@ error=signal('')
     
   }
   onSelectPlaces(selectedPlace: Place) {
-    this.http.put('http://localhost:3000/user-places',{
-      placeId:selectedPlace.id
-    }).subscribe({
-      next:(resData)=>console.log(resData)
-    });
-    }
+    this.placesService.addPlaceToUserPlaces(selectedPlace)
+  }
 
 
 
